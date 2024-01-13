@@ -10,19 +10,19 @@ const taskSchema = new mongoose.Schema({
         required: true
     },
     user: { 
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    },
+    }, 
     status: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'status'
     },
-    subTask: [{
-        type: mongoose.SchemaTypes.ObjectId,
+    subtask: [{
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'subtask'
     }],
    
-})
+}) 
 
 const taskModel  = mongoose.model('task', taskSchema)
 

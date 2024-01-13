@@ -6,7 +6,7 @@ const statusSchema = new mongoose.Schema({
         required: true
     },
     task: [{
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'task'
     }],
    

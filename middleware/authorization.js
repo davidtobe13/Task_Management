@@ -1,49 +1,54 @@
-const jwt = require('jsonwebtoken')
-const userModel = require('../models/userModel')
-// require('dotenv').config()
+const jwt = require('jsonwebtoken');
+const userModel = require('../models/userModel');
+
 const authorization = async (req, res, next) => {
-    try{
+    try {
         const auth = req.headers.authorization;
 
-        if(!auth){
+        if (!auth) {
             return res.status(404).json({
                 message: 'No authorization token found'
-            })
+            });
         }
 
         const token = auth.split(' ')[1];
 
-        if(!token){
+        if (!token) {
             return res.status(404).json({
-                message: `Aurhorization failed`
-            })
+                message: `Authorization failed`
+            });
         }
 
         const decodedToken = jwt.verify(token, process.env.secret);
 
-        const user = await userModel.findById(decodedToken.userId)
+        const user = await userModel.findById(decodedToken.userId);
 
-        
-        if(!user){
+        if (!user) {
             return res.status(404).json({
-                message: `Aurhorization failed: User not found`
+                message: `Authorization failed: User not found`
             });
         }
 
-        req.user = decodedToken
-
-        next()
-    }catch(err){
-
-        if(err instanceof jwt.JsonWebTokenError){
-            return res.status(500).json({
-                message: `This user is signed out`
+        if(user.blacklist.includes(token)){
+            return res.status(403).json({
+                message: 'Authorization failed: You are logged out. Please login to continue'
             })
         }
+
+        req.user = decodedToken;
+
+        next();
+    } catch (err) {
+        if (err instanceof jwt.JsonWebTokenError) {
+            return res.status(401).json({
+                message: 'Authorization failed: Invalid token'
+            });
+        }
+
         res.status(500).json({
             message: err.message
-        })
+        });
     }
 };
 
-module.exports = authorization
+module.exports = authorization;

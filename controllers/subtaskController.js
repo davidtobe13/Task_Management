@@ -1,4 +1,4 @@
-const taskModel = require('../models/userModel')
+const taskModel = require('../models/taskModel')
 const subtaskModel = require('../models/subtaskModel')
 
 
@@ -20,7 +20,7 @@ exports.createSubtask = async (req, res) =>{
             subtask
         })
 
-        task.subtask.push(subtask._id)
+        task.subtask.push(createSubtask._id)
         createSubtask.task = task._id
 
         await task.save()
@@ -28,7 +28,7 @@ exports.createSubtask = async (req, res) =>{
 
         res.status(201).json({
             message: `Successfully added a subtask`,
-            data: task
+            data: createSubtask
         })
 
     }catch(err){
@@ -74,8 +74,8 @@ exports.getAllSubtasks = async (req, res) =>{
             })
         }
         res.status(200).json({
-            message: `subtasks fetched successfully. There are ${subtask.length} tasks here`,
-            data: comment
+            message: `subtasks fetched successfully. There are ${subtask.length} subtasks here`,
+            data: subtask
         })
 
     }catch(err){

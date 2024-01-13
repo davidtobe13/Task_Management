@@ -1,6 +1,5 @@
-const myModel = require('../models/userModel');
+const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
-const validation = require('../validation/validation');
 const jwt = require('jsonwebtoken');
 
 exports.signUp = async (req, res) =>{
@@ -13,16 +12,6 @@ exports.signUp = async (req, res) =>{
             password,
             confirmPassword
     } = req.body
- 
-    
-    await validation.validateSync(req.body,(err,data)=>{
-        if(err){
-            res.json(err.message)
-        }else{
-            res.json(data)
-        }
-        })
-        
         const userExists = await userModel.findOne({email})
 
         if(userExists){
@@ -40,7 +29,7 @@ exports.signUp = async (req, res) =>{
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password && confirmPassword, salt)
 
-        const user = await myModel.create({
+        const user = await userModel.create({
             firstName,
             lastName,
             email,
@@ -50,7 +39,7 @@ exports.signUp = async (req, res) =>{
             
         })
         res.status(201).json({
-            message: `Welcome, ${user.fullName}. You have created an account successfully`,
+            message: `Welcome, ${user.firstName} ${user.lastName.slice(0,1).toUpperCase()}. You have created an account successfully`,
             data: user
         })
 
@@ -68,7 +57,7 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
 
         // Check if the provided detail is an email or phone number
-        const user = await myModel.findOne({email});
+        const user = await userModel.findOne({email});
 
         if (!user) {
             return res.status(404).json({
@@ -108,38 +97,28 @@ exports.login = async (req, res) => {
 };
 
 
-//              firstName: (req.body.firstName).trim().toLowerCase(), 
-//             lastName: (req.body.lastName).trim().toLowerCase(), 
-//             phoneNumber: (req.body.phoneNumber).trim().toLowerCase(), 
-//             username: (req.body.username).trim().toLowerCase(), 
-//             email: (req.body.email).trim().toLowerCase(), 
-
-
 exports.logOut = async (req, res) => {
-    try{
+    try {
         const userId = req.user.userId;
-        const user = await userModel.findById(userId);
 
-        const token = req.headers.authorization.split(' ')[1]
+        const user = await userModel.findById(userId)
 
-        if(!user){
+        if (!user) {
             return res.status(404).json({
-                message: `This user does not exist or is already logged out`
-            })
+                message: 'This user does not exist',
+            });
         }
+        const token = req.headers.authorization.split(' ')[1];
+        user.blacklist.push(token)
+        await user.save()
 
-         // Revoke token by setting its expiration to a past date
-    const decodedToken = jwt.verify(token, process.env.secret);
-    decodedToken.exp = 1;
-
-    res.status(200).json({
-        message: `You have signed out successfully`
-    })
-        
-        
-    }catch(err){
+        res.status(200).json({
+            message: 'User signed out successfully',
+            user
+        });
+    } catch (err) {
         res.status(500).json({
-            message: err.message
-        })
+            message: err.message,
+        });
     }
-}
+};

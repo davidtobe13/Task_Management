@@ -33,38 +33,40 @@
 // })
 
 
-const hapiJoiValidator = require("@hapi/joi");
+// const hapiJoiValidator = require("@hapi/joi");
 
-const validation = (data) => {
+// const validation = (req, res, next) => {
 
-  try {
-  
-        const validateStudent = hapiJoiValidator.object({
-        firstName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
-          'string.empty': 'firstName cannot be empty',
-          'string.min': 'Min 3 characteers',
-        }),
-        lastName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
-          'string.empty': 'lastName cannot be empty',
-          'string.min': 'Min 3 characteers',
-        }),
-        phoneNumber: hapiJoiValidator.string().min(11).trim().regex(/^\+\d{11,}$/).required().message({
-          'string.empty': 'phone number cannot be empty',
-        }),
+//         const validateStudent = hapiJoiValidator.object({
+//         firstName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
+//           'string.empty': 'firstName cannot be empty',
+//           'string.min': 'Min 3 characteers',
+//         }),
+//         lastName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
+//           'string.empty': 'lastName cannot be empty',
+//           'string.min': 'Min 3 characteers',
+//         }),
+//         phoneNumber: hapiJoiValidator.string().min(11).trim().regex(/^\+\d{11,}$/).required().message({
+//           'string.empty': 'phone number cannot be empty',
+//         }),
 
-        email: hapiJoiValidator.string().email({ tlds: { allow: false } }).trim().min(5).required(),
-        password: hapiJoiValidator.string().min(8).max(30).required(),
-        confirmPassword: hapiJoiValidator.string().min(8).max(30).required()
-      })
+//         email: hapiJoiValidator.string().email({ tlds: { allow: false } }).trim().min(5).required(),
+//         password: hapiJoiValidator.string().min(8).max(30).required(),
+//         confirmPassword: hapiJoiValidator.string().min(8).max(30).required()
+//       })
 
-    return validateStudent.validation(data);
+//     // return validateStudent.validation(data);
+//       const {error} = validateStudent.validate(req.body, {abortEarly: false})
 
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+//       if(error){
+//         return res.status(400).json({
+//           message: error.message
+//         })
+//       }
 
-module.exports = validation
+// next();
+// }
+// module.exports = validation
 
 
 
@@ -108,3 +110,49 @@ module.exports = validation
 // };
 
 // module.exports = validation;
+
+
+const hapiJoiValidator = require("@hapi/joi");
+
+const validation = (req, res, next) => {
+  const validateStudent = hapiJoiValidator.object({
+    firstName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
+      'string.empty': 'firstName cannot be empty',
+      'string.min': 'Min 3 characters', // Corrected typo in the message
+    }),
+    lastName: hapiJoiValidator.string().min(3).max(40).trim().pattern(/^[a-zA-Z]+$/).required().messages({
+      'string.empty': 'lastName cannot be empty',
+      'string.min': 'Min 3 characters',
+    }),
+    phoneNumber: hapiJoiValidator.string().min(11).trim().regex(/^\d{11}$/).required().messages({
+      'string.empty': 'phone number cannot be empty',
+      'string.pattern.base': 'Invalid phone number format', // Added a pattern validation message
+  }),  
+    email: hapiJoiValidator.string().email({ tlds: { allow: false } }).trim().min(5).required().messages({
+      'string.empty': 'email cannot be empty',
+      'string.email': 'Invalid email format',
+    }),
+    password: hapiJoiValidator.string().min(8).max(30).required().messages({
+      'string.empty': 'password cannot be empty',
+      'string.min': 'Min 8 characters for password',
+      'string.max': 'Max 30 characters for password',
+    }),
+    confirmPassword: hapiJoiValidator.string().min(8).max(30).required().messages({
+      'string.empty': 'confirmPassword cannot be empty',
+      'string.min': 'Min 8 characters for confirmPassword',
+      'string.max': 'Max 30 characters for confirmPassword',
+    }),
+  });
+
+  const { error } = validateStudent.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      message: error.details.map(detail => detail.message), // Return an array of all error messages
+    });
+  }
+
+  next();
+};
+
+module.exports = validation;

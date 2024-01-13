@@ -1,4 +1,4 @@
-const taskModel = require('../models/userModel')
+const taskModel = require('../models/taskModel')
 const statusModel = require('../models/statusModel')
 const userModel = require('../models/userModel')
 
@@ -12,7 +12,9 @@ exports.createTask = async (req, res) =>{
         const {title, content} = req.body
 
         const user = await userModel.findById(userId)
+
         const status = await statusModel.findById(statusId)
+         
 
         if(!user){
             return res.status(400).json({
@@ -55,9 +57,9 @@ exports.createTask = async (req, res) =>{
 
 exports.getTask = async (req, res) =>{
     try{
-        const id = req.params.id
+        const taskId = req.params.taskId
 
-        const task = await taskModel.findById(id).populate('subtask')
+        const task = await taskModel.findById(taskId).populate('subtask')
 
         if(!task){
             return res.status(404).json({
@@ -83,12 +85,12 @@ exports.getAllTasks = async (req, res) =>{
 
         if(task.length === 0){
             return res.status(404).json({
-                message: `There are no status present here`
+                message: `There are no tasks present here`
             })
         }
         res.status(200).json({
             message: `tasks fetched successfully. There are ${task.length} tasks here`,
-            data: comment
+            data: task
         })
 
     }catch(err){

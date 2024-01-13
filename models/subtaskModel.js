@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const subTaskSchema = new mongoose.Schema({
-    subTask: {
+    subtask: {
         type: String,
         required: true
     },
     task: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'task'
     }
    
