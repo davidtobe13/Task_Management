@@ -4,7 +4,7 @@ const statusSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true
-        
+
     },
     task: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -16,5 +16,3 @@ const statusSchema = new mongoose.Schema({
 const statusModel  = mongoose.model('status', statusSchema)
 
 module.exports = statusModel
-
-
