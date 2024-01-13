@@ -4,6 +4,7 @@ const statusSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true
+        
     },
     task: [{
         type: mongoose.Schema.Types.ObjectId,
