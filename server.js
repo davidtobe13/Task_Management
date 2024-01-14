@@ -21,6 +21,10 @@ app.use('/api/v1', statusRouter);
 app.use('/api/v1', taskRouter);
 app.use('/api/v1', subtaskRouter);
 
+app.get('/', (req, res) => {
+    res.send('Welcome to your API!');
+  });
+
 const port = process.env.port;
 
 app.listen(port, () => {
