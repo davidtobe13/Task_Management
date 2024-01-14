@@ -18,7 +18,7 @@ const validation = require('../validation/validation');
 
 /**
  * @swagger
- * api/v1/signup:
+ * /api/v1/signup:
  *   post:
  *     summary: Register a new user
  *     tags: [Users]
@@ -48,7 +48,7 @@ router.post('/signup', validation ,signUp)
 
 /**
  * @swagger
- * api/v1/login:
+ * /api/v1/login:
  *   post:
  *     summary: Log in a user
  *     tags: [Users]
@@ -76,7 +76,7 @@ router.post('/login', login)
 
 /**
  * @swagger
- * api/v1/logout:
+ * /api/v1/logout:
  *   post:
  *     summary: Log out user
  *     tags: [Users]
