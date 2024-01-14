@@ -34,7 +34,7 @@ const validation = require('../validation/validation');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/response'
+ *               $ref: '#/definition/response'
  *       '400':
  *         description: Invalid request or user already exists
  *         content:
