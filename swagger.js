@@ -3,6 +3,7 @@ const swaggerUi = require('swagger-ui-express');
 const glob = require('glob');
 const path = require('path');
 const { Status, SubTask, Task, User } = require('./schema');
+const responses = require('./response');
 
 const options = {
   definition: {
@@ -25,6 +26,7 @@ const options = {
         User,
       },
     },
+    responses,
   },
   apis: glob.sync(path.resolve(__dirname, './routers/*.js')), // Use glob to find all router files
 };

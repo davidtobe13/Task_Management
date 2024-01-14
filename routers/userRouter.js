@@ -34,7 +34,7 @@ const validation = require('../validation/validation');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UserResponse'
+ *               $ref: '#/response'
  *       '400':
  *         description: Invalid request or user already exists
  *         content:
@@ -57,12 +57,12 @@ router.post('/signup', validation ,signUp)
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/UserLogin'
+ *           $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
  *         description: User logged in successfully
  *         schema:
- *           $ref: '#/definitions/UserResponse'
+ *           $ref: '#response'
  *       '404':
  *         description: User not found
  *       '400':
@@ -74,33 +74,29 @@ router.post('/signup', validation ,signUp)
 router.post('/login', login)
 
 
-/*
-
-* /logout:
-*   post:
-*     summary: Log out user
-*     tags: [Users]
-*     security:
-*       - BearerAuth: []
-*     responses:
-*       200:
-*         description: User signed out successfully
-*         content:
-*           application/json:
-*             example:
-*               message: User signed out successfully
-*               user:
-*                 _id: "60a4c29e8e39ea001cbb73a7"
-*                 firstName: "John"
-*                 lastName: "Doe"
-*                 email: "john.doe@example.com"
-*                 phoneNumber: "+1234567890"
-*                 password: "$2a$10$..."
-*                 confirmPassword: "$2a$10$..."
-*                 task: []
-*                 blacklist: ["eyJhbGciOiJIUzI1NiIsIn..."]
-*/
-router.post('/logout', authorization , logOut)
+/**
+ * @swagger
+ * /logout:
+ *   post:
+ *     summary: Log out user
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: User signed out successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: User signed out successfully
+ *               user:
+ *                 $ref: '#/response' 
+ *       '401':
+ *         description: Unauthorized. User not authenticated
+ *       '500':
+ *         description: Internal Server Error
+ */
+router.post('/logout', authorization, logOut);
 
 
 module.exports = router;   

@@ -31,7 +31,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/definitions/Task'
+ *             $ref: '#/components/Task'
  *     responses:
  *       201:
  *         description: Task created successfully
@@ -99,7 +99,7 @@ router.get('/getalltasks', authorization, getAllTasks);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/definitions/Task'
+ *             $ref: '#/components/Task'
  *     responses:
  *       200:
  *         description: Task updated successfully
