@@ -34,7 +34,7 @@ const validation = require('../validation/validation');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/definition/response'
+ *               $ref: '#/responses'
  *       '400':
  *         description: Invalid request or user already exists
  *         content:
@@ -62,7 +62,7 @@ router.post('/signup', validation ,signUp)
  *       '200':
  *         description: User logged in successfully
  *         schema:
- *           $ref: '#response'
+ *           $ref: '#/responses'
  *       '404':
  *         description: User not found
  *       '400':
@@ -90,7 +90,7 @@ router.post('/login', login)
  *             example:
  *               message: User signed out successfully
  *               user:
- *                 $ref: '#/response' 
+ *                 $ref: '#/responses' 
  *       '401':
  *         description: Unauthorized. User not authenticated
  *       '500':

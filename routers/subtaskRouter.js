@@ -31,7 +31,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/SubTask'
+ *             $ref: '#/components/schema/SubTask'
  *     responses:
  *       201:
  *         description: Subtask created successfully
@@ -99,7 +99,7 @@ router.get('/getallsubtasks', authorization, getAllSubtasks);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/SubTask'
+ *             $ref: '#/components/schema/SubTask'
  *     responses:
  *       200:
  *         description: Subtask updated successfully
