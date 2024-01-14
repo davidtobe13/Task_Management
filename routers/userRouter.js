@@ -22,20 +22,27 @@ const validation = require('../validation/validation');
  *   post:
  *     summary: Register a new user
  *     tags: [Users]
- *     parameters:
- *       - name: body
- *         in: body
- *         required: true
- *         schema:
- *           $ref: '#/definitions/UserSignUp'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       '201':
  *         description: User registered successfully
- *         schema:
- *           $ref: '#/definitions/UserResponse'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserResponse'
  *       '400':
  *         description: Invalid request or user already exists
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: 'Invalid request or user already exists'
  */
+router.post('/signup', validation, signUp);
 
 router.post('/signup', validation ,signUp)
 
