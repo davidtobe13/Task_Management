@@ -14,7 +14,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://task-management-luay.onrender.com', // Change this to your API base URL
+        url: 'https://task-management-luay.onrender.com/api/v1', // Change this to your API base URL
       },
     ],
   },
