@@ -1,3 +1,4 @@
+
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const glob = require('glob');
@@ -17,7 +18,7 @@ const options = {
       },
     ],
   },
-  apis: glob.sync(path.resolve(__dirname, ['./routers/*.js'])), // Use glob to find all router files
+  apis: glob.sync(path.resolve(__dirname, './routers/*.js')), // Use glob to find all router files
 };
 
 const specs = swaggerJsdoc(options);
